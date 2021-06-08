@@ -16,9 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7Ou-rc-B8z">
-                                <rect key="frame" x="0.0" y="44" width="414" height="808"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7Ou-rc-B8z">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="77" id="S6N-fG-Bhj" customClass="iOS_TableViewCell" customModule="Sample_TableView" customModuleProvider="target">
@@ -28,21 +27,34 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TwF-M0-O1m">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TwF-M0-O1m">
                                                     <rect key="frame" x="20" y="11" width="394" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="FIW-iZ-HRI"/>
+                                                        <constraint firstAttribute="width" constant="394" id="fyL-lG-p3U"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4d-Vq-Ioi">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4d-Vq-Ioi">
                                                     <rect key="frame" x="20" y="45" width="394" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="wNF-JX-W39"/>
+                                                        <constraint firstAttribute="width" constant="394" id="yTd-4Q-V7E"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TwF-M0-O1m" firstAttribute="leading" secondItem="OCk-gW-BqZ" secondAttribute="leadingMargin" id="4Sy-Iv-54E"/>
+                                                <constraint firstAttribute="bottom" secondItem="S4d-Vq-Ioi" secondAttribute="bottom" constant="11" id="84D-Hx-Jpo"/>
+                                                <constraint firstItem="TwF-M0-O1m" firstAttribute="top" secondItem="OCk-gW-BqZ" secondAttribute="top" constant="11" id="cLG-uS-HU3"/>
+                                                <constraint firstItem="S4d-Vq-Ioi" firstAttribute="top" secondItem="TwF-M0-O1m" secondAttribute="bottom" constant="4" id="lEe-YP-wa9"/>
+                                                <constraint firstItem="TwF-M0-O1m" firstAttribute="leading" secondItem="S4d-Vq-Ioi" secondAttribute="leading" id="vdZ-Xl-D4J"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="animalLabel" destination="TwF-M0-O1m" id="iA3-TW-Tof"/>
@@ -55,11 +67,40 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="xph-g8-R2L"/>
                                 </connections>
                             </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t7W-ZX-70d">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <items>
+                                    <navigationItem id="kXk-Kd-tnc">
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="jLh-ox-aYV">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="igd-UY-64q">
+                                                <rect key="frame" x="302" y="4" width="92" height="36"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <state key="normal" title="追加"/>
+                                                <connections>
+                                                    <action selector="addButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Acm-Xz-lPO"/>
+                                                </connections>
+                                            </button>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7Ou-rc-B8z" firstAttribute="top" secondItem="t7W-ZX-70d" secondAttribute="bottom" id="2rl-fa-OmW"/>
+                            <constraint firstItem="t7W-ZX-70d" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5a6-pQ-n5G"/>
+                            <constraint firstItem="7Ou-rc-B8z" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Hnm-oM-ttU"/>
+                            <constraint firstItem="t7W-ZX-70d" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MgZ-FH-J0z"/>
+                            <constraint firstItem="t7W-ZX-70d" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OpR-mh-bcd"/>
+                            <constraint firstItem="7Ou-rc-B8z" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="PjR-de-rT2"/>
+                            <constraint firstItem="7Ou-rc-B8z" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Sfx-l9-nxy"/>
+                            <constraint firstItem="7Ou-rc-B8z" firstAttribute="top" secondItem="t7W-ZX-70d" secondAttribute="bottom" id="mxE-8z-TGn"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="navigationBar" destination="t7W-ZX-70d" id="mek-A5-biP"/>
                         <outlet property="tableView" destination="7Ou-rc-B8z" id="l0y-4l-wGv"/>
                     </connections>
                 </viewController>
