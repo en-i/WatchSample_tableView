@@ -22,6 +22,7 @@ class InterfaceController: WKInterfaceController,WCSessionDelegate {
     
     //tableと接続
     @IBOutlet weak var sendTable: WKInterfaceTable!
+    
     override func awake(withContext context: Any?) {
         //WatchConnectivityのSession開始
         if (WCSession.isSupported()) {
@@ -29,6 +30,7 @@ class InterfaceController: WKInterfaceController,WCSessionDelegate {
             session.delegate = self
             session.activate()
         }
+        
         //データの読み込み
         if UserDefaults.standard.object(forKey: "emojis") != nil{
             emojis = UserDefaults.standard.object(forKey: "emojis") as? [String]
@@ -36,7 +38,8 @@ class InterfaceController: WKInterfaceController,WCSessionDelegate {
             //配列の初期化
             emojis = ["🐱 ネコ", "🐶 イヌ", "🐹 ハムスター", "🐲 ドラゴン", "🦄 ユニコーン"]
         }
-        //Tableの生成の関数(↓を参照)
+        
+        //Table生成の関数(↓を参照)
         createTable()
 
     }
@@ -51,44 +54,49 @@ class InterfaceController: WKInterfaceController,WCSessionDelegate {
     
     //tableがタップされた時の処理
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
+        
         //押された日付を取得、yyyy/MM/dd HH:mm:ssの形に整型
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ja_JP")
         dateFormatter.timeStyle = .medium
         dateFormatter.dateStyle = .medium
         dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        let date = dateFormatter.string(from: Date())
         
-        //データをanimal,dateをkeyとしてiOSに送信
-        let item: Dictionary<String, String> = ["animal": emojis[rowIndex],"date": dateFormatter.string(from: Date())]
-        //メッセージ全体のkeyをsendに設定して送信
-        let message = ["send" :item]
-        do{
-            try WCSession.default.updateApplicationContext(message)
-        }catch{
-            //失敗した時
-        }
+        //animal、dateをkeyとしてiOSに送信
+        let message = ["animal": emojis[rowIndex],"date": date]
+        WCSession.default.sendMessage(message, replyHandler:  { reply in print(reply) }, errorHandler: { error in print(error.localizedDescription)})
     }
     
     //iOSからデータを受け取った時の処理
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        //送られてきた絵文字を追加
-        self.emojis.append(message["send"] as! String)
-        //データを保存
-        UserDefaults.standard.set(self.emojis, forKey: "emojis")
-        //Tableを再定義
-        createTable()
-        replyHandler(["watch": "OK"])
+        DispatchQueue.main.async {() -> Void in
+            
+            //送られてきた絵文字を追加
+            self.emojis.append(message["send"] as! String)
+            
+            //データを保存
+            UserDefaults.standard.set(self.emojis, forKey: "emojis")
+            
+            //Tableを再定義
+            self.createTable()
+            replyHandler(["watch": "OK"])
+        }
+        
     }
     
     //Tableを生成する関数
     func createTable(){
-        //配列animalsのデータの数だけ、tableを形成、withRowTypeはRowControllerのidentifierで設定
+        
+        //配列animalsのデータの数だけtableを生成、withRowTypeはRowControllerのidentifierで設定
         sendTable.setNumberOfRows(emojis.count, withRowType: "row")
         
         //enumerated関数を使うことで、配列animalsのデータがitemに、取得されたデータのindex番号がindexに返される
         for (index, item) in emojis.enumerated() {
+            
             //Watch_TableRowを継承
             let row = sendTable.rowController(at: index) as! Watch_TableRow
+            
             //継承したanimalLabelに時刻を代入
             row.animalLabel.setText(item)
         }

@@ -11,21 +11,28 @@ import WatchConnectivity
 
 //WCSessionDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationBarDelegateを追加
 class ViewController: UIViewController, WCSessionDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationBarDelegate{
+    
 //tableViewを使用するときは、Main.StoryboardでtableViewのdelegateとdatasourceを、VIewControllerに接続しておく
+    
     //tableViewのcellの数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         //receiveTimeListでも可
         return receiveEmojiList.count
     }
     
     //tableViewのcellの中身
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         //iOS_TableVIewCellを継承、cellのidentifierはMain.Storyboardで設定
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! iOS_TableViewCell
+        
         //継承したanimalLabelに絵文字を代入
         cell.animalLabel.text = receiveEmojiList[indexPath.row]
+        
         //継承したtimeLabelに時刻を代入
         cell.timeLabel.text = receiveTimeList[indexPath.row]
+        
         return cell
     }
     
@@ -42,6 +49,7 @@ class ViewController: UIViewController, WCSessionDelegate,UITableViewDelegate,UI
     
     //追加ボタンと接続
     @IBAction func addButton(_ sender: Any) {
+        
         //追加用TextField
         var alertTextField: UITextField?
         
@@ -55,14 +63,14 @@ class ViewController: UIViewController, WCSessionDelegate,UITableViewDelegate,UI
                 alertTextField = textField
         })
         
-        //Cancelを押した時
+        //取り消しを押した時
         alert.addAction(
             UIAlertAction(
                 title: "取り消し",
                 style: UIAlertAction.Style.cancel,
                 handler: nil))
         
-        //OKを押した時
+        //送信を押した時
         alert.addAction(
             UIAlertAction(
                 title: "送信",
@@ -70,18 +78,19 @@ class ViewController: UIViewController, WCSessionDelegate,UITableViewDelegate,UI
                 
                 //入力データをWatchに送信
                 let addEmoji: String = alertTextField!.text!
-                let message = ["send" :addEmoji]
+               
                 //Watchにデータを送る処理
+                let message = ["send" :addEmoji]
                 WCSession.default.sendMessage(message, replyHandler:  { reply in print(reply) }, errorHandler: { error in print(error.localizedDescription)})
             }
         )
         self.present(alert, animated: true, completion: nil)
     }
     
-    //Apple Watchから送られてきた、絵文字の情報を記録する配列
+    //Apple Watchから送られてきた絵文字の情報を記録する配列
     var receiveEmojiList: [String]!
     
-    //Apple Watchから送られてきた、時刻の情報を記録する配列
+    //Apple Watchから送られてきた時刻の情報を記録する配列
     var receiveTimeList:[String]!
     
     //WatchConnectivityを使うときは必ず記入
@@ -116,28 +125,25 @@ class ViewController: UIViewController, WCSessionDelegate,UITableViewDelegate,UI
             receiveEmojiList = []
             receiveTimeList = []
         }
-        
-        self.tableView.reloadData()
-        
     }
     
-    //Apple Watchのデータを受け取る関数(applicationContextに、送られてきたデータが入っている)
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        DispatchQueue.main.async { () -> Void in
-            //keyであるsendで検証
-            if let message = applicationContext["send"] as? Dictionary<String, String> {
-                //送られてきた絵文字を代入
-                self.receiveEmojiList.append(message["animal"]! as String)
-                //送られてきた時刻を代入
-                self.receiveTimeList.append(message["date"]!)
-                
-                //データを保存
-                UserDefaults.standard.set(self.receiveEmojiList, forKey: "receiveEmojiList")
-                UserDefaults.standard.set(self.receiveTimeList, forKey: "receiveTimeList")
-                
-                //tableVIewを更新
-                self.tableView.reloadData()
-            }
+    //Apple Watchのデータを受け取る関数(messageに送られてきたデータが入っている)
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        
+        DispatchQueue.main.async {() -> Void in
+            //送られてきた絵文字を代入
+            self.receiveEmojiList.append(message["animal"] as! String)
+            
+            //送られてきた時刻を代入
+            self.receiveTimeList.append(message["date"] as! String)
+            
+            //データを保存
+            UserDefaults.standard.set(self.receiveEmojiList, forKey: "receiveEmojiList")
+            UserDefaults.standard.set(self.receiveTimeList, forKey: "receiveTimeList")
+            
+            //tableVIewを更新
+            self.tableView.reloadData()
+            replyHandler(["watch": "OK"])
         }
     }
     
