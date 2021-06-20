@@ -68,6 +68,7 @@ class InterfaceController: WKInterfaceController,WCSessionDelegate {
         WCSession.default.sendMessage(message, replyHandler:  { reply in print(reply) }, errorHandler: { error in print(error.localizedDescription)})
     }
     
+    
     //iOSからデータを受け取った時の処理
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         DispatchQueue.main.async {() -> Void in

@@ -13,6 +13,7 @@ class iOS_TableViewCell: UITableViewCell {
     @IBOutlet weak var animalLabel: UILabel!
     //薄い灰色のラベルと接続
     @IBOutlet weak var timeLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
